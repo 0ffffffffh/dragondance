@@ -18,7 +18,7 @@ Dragon Dance also supports its own scripting system.
 
 ![](https://user-images.githubusercontent.com/437161/57895545-d81ee480-7854-11e9-8713-b18036ff0b80.gif)
 
-It lets you flexible way to play with the coverage data. You can load, delete, show, intersect, diff, distinct, sum operation on them. Following section will be contained the scripting system and api.
+It lets you flexible way to play with the coverage data. You can load, delete, show, intersect, diff, distinct, sum operation on them. Following section will be contained the scripting system and api. Press Alt + Enter keys to execute the script.
 
 #### Built-in Functions
 
@@ -100,7 +100,7 @@ The following API documentations and their behaviors may change until reached fi
 | Return Value            | None                                                         |
 | Minimum Parameter Count | 1                                                            |
 | Maximum Parameter Count | 1                                                            |
-| Description             | Sets the current working directory to given path. All import calls without absolute path after this, coverage files will be searched in the active working directory. |
+| Description             | Sets the current working directory with the given path. All import calls without absolute path after the **cwd** the coverage files will be searched in the active working directory. |
 | Aliases                 | None                                                         |
 
 
@@ -209,7 +209,21 @@ Dragon Dance can try to fix a misanalysed situation in ghidra during import the 
 
 In the future versions of the plugin, it may contains more fixups or workarounds for the image.
 
+### Installation
 
+Installation is quite easy.
+
+Start Ghidra.
+
+Click "File" menu and then select "Install Extensions.."
+
+Click the Green Plus icon from the Top-Right of the window
+
+Select plugin zip package and select Ok.
+
+Select dragondance from the list
+
+Click Ok and restart the ghidra
 
 ### Collecting Coverage Data
 
