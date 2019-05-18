@@ -71,6 +71,12 @@ In this example three physical coverage variable goes into sum operation and the
 
 In this case, the result will be set to the rvar and it's previous coverage value destroyed immediately. Because this was a logical object and should be deleted to prevent object leakage. If you want to destroy a variable that it contained a physical coverage object, you have to call `discard` built-in to do. All built-ins will be detailed below.
 
+You can write complex scripts using nested built-in calls, you can write something like so:
+
+`cres = diff(intersect(a, load("another.log"), c, d), sum(e,f) )`
+
+you don't have to write the logic line by line.
+
 ### Built-in References
 
 The following API documentations and their behaviors may change until reached final version. 
