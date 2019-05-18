@@ -1,0 +1,44 @@
+
+/*/*/*/*/*/bin/
+/*/*/*/*/*/build/
+/*/*/*/*/bin/
+/*/*/*/*/build/
+/*/*/*/bin/
+/*/*/*/build/
+/*/*/bin/
+/*/*/build/
+/*/bin/
+/*/build/
+/build/
+/bin/
+
+**/dist
+
+# Ignore Sleigh generated files
+*.sla
+**/data/build.xml
+
+# Misc files
+*.setting
+*.settings
+*.directory
+.gradle/
+
+# File locks
+*.ulock
+*.lock
+
+# Ignore object files
+*.o
+*.obj
+*.class
+
+
+# Ignore UNIX backup files
+*~
+*.swp
+
+# Ignore eclipse project files
+.project
+.classpath
+.settings/

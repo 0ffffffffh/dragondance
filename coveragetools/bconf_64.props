@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <TARGET>intel64</TARGET>
+    <BITNESS>64</BITNESS>
+    <BIONIC_ARCH>x86_64</BIONIC_ARCH>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="TARGET">
+      <Value>$(TARGET)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BITNESS">
+      <Value>$(BITNESS)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BIONIC_ARCH">
+      <Value>$(BIONIC_ARCH)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
