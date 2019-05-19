@@ -22,6 +22,15 @@ public final class Util {
 		return path.substring(p1+1, p2);
 	}
 	
+	public static String getDirectoryOfFile(String path) {
+		File file = new File(path);
+		
+		if (file.isDirectory())
+			return file.getAbsolutePath();
+		
+		return file.getParent();
+	}
+	
 	public static String md5(String sval) {
 		return md5(sval.getBytes());
 	}

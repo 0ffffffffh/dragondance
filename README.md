@@ -151,8 +151,6 @@ The following API documentations and their behaviors may change until reached fi
 | Description             | Locates the current address selection by given offset. Real address value calculated by adding the offset value to the image base value. |
 | Aliases                 | None                                                         |
 
-***Note***: *This built-in does not perform any boundary check for now. I have to implement strict boundary check for each executable sections. If you give a value that out of valid boundary, you may experience undefined behavior.*
-
 
 
 **import(** *String* : filePathOrCoverageName **)**

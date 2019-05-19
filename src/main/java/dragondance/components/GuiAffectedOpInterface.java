@@ -8,5 +8,5 @@ public interface GuiAffectedOpInterface {
 	public CoverageData loadCoverage(String coverageDataFile) throws FileNotFoundException;
 	public boolean removeCoverage(int id);
 	public boolean visualizeCoverage(CoverageData coverage);
-	public void goTo(long offset);
+	public boolean goTo(long offset);
 }

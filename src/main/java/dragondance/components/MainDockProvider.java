@@ -732,8 +732,14 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 	}
 	
 	@Override
-	public void goTo(long offset) {
-		DragonHelper.goToAddress(DragonHelper.getImageBase().getOffset() + offset);
+	public boolean goTo(long offset) {
+		boolean success = DragonHelper.goToAddress(DragonHelper.getImageBase().getOffset() + offset);
+		
+		if (!success) {
+			DragonHelper.showWarning("offset 0x%x is not valid",offset);
+		}
+		
+		return success;
 	}
 
 
