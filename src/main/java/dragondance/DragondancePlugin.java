@@ -64,8 +64,8 @@ public class DragondancePlugin extends ProgramPlugin {
 			if (Globals.EnableStdoutLog)
 				Log.enableStdoutLogging(true);
 			
-			Log.enableVerbose(true);
-			Log.enableInfo(true);	
+			Log.enableError(true);
+			Log.enableWarning(true);
 		}
 		
 		//Multi-session logic implemented but not usable from the GUI.

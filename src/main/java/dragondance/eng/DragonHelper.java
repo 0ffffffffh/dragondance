@@ -3,11 +3,14 @@ package dragondance.eng;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ import dragondance.exceptions.InvalidInstructionAddress;
 import dragondance.util.Util;
 import generic.concurrent.GThreadPool;
 import generic.jar.ResourceFile;
+import generic.json.JSONError;
+import generic.json.JSONParser;
+import generic.json.JSONToken;
 import ghidra.app.plugin.core.colorizer.ColorizingService;
 import ghidra.app.script.GhidraScript;
 import ghidra.app.script.GhidraScriptProvider;
@@ -546,5 +552,50 @@ public class DragonHelper {
 		colorService.clearBackgroundColor(ba, ba);
 		
 		return true;
+	}
+	
+	public static String getStringFromURL(String url) {
+		try {
+			URL u = new URL(url);
+			
+	        StringBuilder sb = new StringBuilder();
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(u.openStream()));
+	            
+	        String nextLine = "";
+	        
+	        while ((nextLine = reader.readLine()) != null) {
+	        	sb.append(nextLine + "\n");
+	        }
+
+	        return sb.toString();
+			
+		} catch (IOException e) {
+			
+		} 
+		
+		return null;
+	}
+	
+	public static Object parseJson(String jsonData) {
+		char[] cbuf = new char[jsonData.length()];
+		Object obj = null;
+		JSONParser parser = new JSONParser();
+		List<JSONToken> tokens = new ArrayList<JSONToken>();
+		jsonData.getChars(0, jsonData.length(), cbuf, 0);
+		
+		if (parser.parse(cbuf, tokens) != JSONError.JSMN_SUCCESS) {
+			return null;
+		}
+		
+		try {
+			obj = parser.convert(cbuf, tokens);
+		}
+		catch (Exception ex) {
+			tokens.clear();
+			return null;
+		}
+		
+		tokens.clear();
+		return obj;
 	}
 }

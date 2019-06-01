@@ -20,6 +20,10 @@ public final class StringResources {
 					"by oguz kartal" + nl + 
 					"http://oguzkartal.net/";
 	
+	public static final String NEW_VERSION = "There is new version of the dragondance." + nl + 
+					"You can get the latest version from the github repo's release section";
+	
+	public static final String UP_TO_DATE = "It's up to date. cool!";
 	
 	public static final String ATLEAST_2_COVERAGES = "You have to select at least 2 coverages to do this operation";
 	

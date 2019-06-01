@@ -334,7 +334,7 @@ public class CodeRange implements AutoCloseable {
 				instList.add(inst);
 			}
 			else {
-				Log.print("already exists");
+				Log.warning("%p already exists",inst.getAddr());
 			}
 			
 		}
@@ -352,7 +352,7 @@ public class CodeRange implements AutoCloseable {
 		if (this.map == null)
 			return;
 		
-		Log.println("Removing for inst: %x", inst.getAddr());
+		Log.debug("Removing for inst: %x", inst.getAddr());
 		
 		if (this.map.containsKey(inst.getAddr())) {
 			instList = this.map.get(inst.getAddr());

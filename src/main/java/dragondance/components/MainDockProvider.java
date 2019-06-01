@@ -33,6 +33,7 @@ import dragondance.exceptions.InvalidInstructionAddress;
 import dragondance.exceptions.OperationAbortedException;
 import dragondance.scripting.DragonDanceScripting;
 import dragondance.util.TextGraphic;
+import dragondance.util.Util;
 import ghidra.framework.plugintool.PluginTool;
 import resources.Icons;
 
@@ -104,6 +105,17 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 			
 		};
 		
+		DockingAction actCheckNewVer = new DockingAction("checkupdate",getName()) {
+			@Override
+			public void actionPerformed(ActionContext context) {
+				if (Util.checkForNewVersion()) {
+					DragonHelper.showMessage(StringResources.NEW_VERSION);
+				}
+				else {
+					DragonHelper.showMessage(StringResources.UP_TO_DATE);
+				}
+			}
+		};
 		
 		actShell.setMenuBarData(
 				new MenuData(new String[] { "Scripting shell" }, null, null));
@@ -111,9 +123,12 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		actAbout.setMenuBarData(
 				new MenuData(new String[] {"About"},null,null));
 		
+		actCheckNewVer.setMenuBarData(
+				new MenuData(new String[] {"Check for update"},null,null));
+		
 		tool.addLocalAction(this, actShell);
 		tool.addLocalAction(this, actAbout);
-		
+		tool.addLocalAction(this, actCheckNewVer);
 		
 		DockingAction actImport = new DockingAction("Import coverage data",getName()) {
 

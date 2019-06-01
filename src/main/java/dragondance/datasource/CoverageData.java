@@ -376,12 +376,12 @@ public class CoverageData implements AutoCloseable {
 		{
 			listValue = this.addressMap.get(key);
 			
-			Log.print("Key: %x | ",key);
-			Log.print("Value(s): ");
+			Log.debug("Key: %x | ",key);
+			Log.debug("Value(s): ");
 			
 			for (InstructionInfo ii : listValue) {
 				if (ii.getOwnerCodeRange().getContainerCoverage() == this) {
-					Log.print("%x (density: %d)," , ii.hashCode(), ii.getDensity());
+					Log.debug("%x (density: %d)," , ii.hashCode(), ii.getDensity());
 				}
 			}
 			

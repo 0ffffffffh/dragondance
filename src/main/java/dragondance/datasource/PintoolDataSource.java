@@ -2,6 +2,8 @@ package dragondance.datasource;
 
 import java.io.FileNotFoundException;
 
+import dragondance.Log;
+
 public class PintoolDataSource extends CoverageDataSource {
 
 	public PintoolDataSource(String sourceFile, String mainModule) throws FileNotFoundException {
@@ -41,6 +43,11 @@ public class PintoolDataSource extends CoverageDataSource {
 					parts[2], 
 					parts[3] );
 	
+			if (mod == null) {
+				Log.warning("Module not parsed for: %s", line);
+				continue;
+			}
+			
 			this.pushModule(mod);
 			
 			if (++readModuleCount == this.moduleCount)

@@ -14,6 +14,8 @@ public class Log {
 	final static int LOGGER_LOG_FILE =				1 << 9;
 	final static int LOGGER_LOG_STDOUT=				1 << 10;
 	
+	final static int LOGGER_ERROR = 				1 << 22;
+	final static int LOGGER_WARNING = 				1 << 23;
 	final static int LOGGER_INFO = 					1 << 24;
 	final static int LOGGER_DEBUG = 				1 << 25;
 	final static int LOGGER_VERBOSE = 				1 << 26;
@@ -92,6 +94,14 @@ public class Log {
 		flagSetReset(LOGGER_LOG_STDOUT,enabled);
 	}
 	
+	public static void enableError(boolean enable) {
+		flagSetReset(LOGGER_ERROR,enable);
+	}
+	
+	public static void enableWarning(boolean enable) {
+		flagSetReset(LOGGER_WARNING,enable);
+	}
+	
 	public static void enableInfo(boolean enable) {
 		flagSetReset(LOGGER_INFO,enable);
 	}
@@ -104,8 +114,8 @@ public class Log {
 		flagSetReset(LOGGER_DEBUG,enable);
 	}
 	
-	public static void print(String format, Object... args) {
-		String slog;
+	private static void print(String logType, String format, Object... args) {
+		String slog = "";
 		
 		
 		if (!hasFlag(LOGGER_ENABLED))
@@ -116,7 +126,12 @@ public class Log {
 				contains("64") ? "0x%016x" : "0x%08x";
 		format = format.replace("%p", pRepl);
 		
-		slog = String.format(format, args);
+		if (logType != null && !logType.isEmpty()) {
+			slog = "(" + logType + "): ";
+		}
+		
+		slog += String.format(format, args);
+		
 		
 		if (hasFlag(LOGGER_LOG_GHIDRA_CONSOLE))
 			DragonHelper.printConsole(slog);
@@ -133,16 +148,42 @@ public class Log {
 		
 	}
 	
-	public static void println(String format, Object... args) {
-		print(format + "\n",args);
+	public static void plain(String format, Object...args) {
+		print("",format,args);
 	}
 	
+	public static void println(String format, Object... args) {
+		print("",format + "\n",args);
+	}
+	
+	public static void println(String logType, String format, Object...args) {
+		print(logType,format + "\n",args);
+	}
+	
+	public static void error(String format, Object... args) {
+		
+		if (!hasFlag(LOGGER_ERROR))
+			return;
+		
+		println("Error",format,args);
+	}
+	
+
+	public static void warning(String format, Object... args) {
+		
+		if (!hasFlag(LOGGER_WARNING))
+			return;
+		
+		println("Warning",format,args);
+	}
+	
+
 	public static void info(String format, Object... args) {
 		
 		if (!hasFlag(LOGGER_INFO))
 			return;
 		
-		println(format,args);
+		println("Info",format,args);
 	}
 	
 	public static void verbose(String format, Object... args) {
@@ -150,7 +191,7 @@ public class Log {
 		if (!hasFlag(LOGGER_VERBOSE))
 			return;
 		
-		println(format,args);
+		println("Verbose",format,args);
 	}
 	
 	public static void debug(String format, Object... args) {
@@ -158,7 +199,7 @@ public class Log {
 		if (!hasFlag(LOGGER_DEBUG))
 			return;
 		
-		println(format,args);
+		println("Dbg",format,args);
 	}
 	
 	public static boolean isEnabled() {

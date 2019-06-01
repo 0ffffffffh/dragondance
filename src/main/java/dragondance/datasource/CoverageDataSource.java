@@ -30,7 +30,7 @@ public class CoverageDataSource implements AutoCloseable{
 	protected List<BlockEntry> entries;
 	
 	protected String mainModuleName = null;
-	protected int mainModuleId = -1;
+	protected ModuleInfo mainModule = null;
 	
 	protected boolean isEof = false;
 	protected boolean processed = false;
@@ -298,17 +298,30 @@ public class CoverageDataSource implements AutoCloseable{
 	}
 	
 	protected void pushModule(ModuleInfo mod) {
-		if (this.mainModuleName != null && mod.getPath().endsWith(this.mainModuleName)) {
-			this.mainModuleId = mod.getId();
+		if (this.mainModuleName != null && 
+				this.mainModule == null && 
+				mod.getPath().endsWith(this.mainModuleName)
+				) 
+		{
+			this.mainModule = mod;
 			
-			Log.info("Main module id: %d",this.mainModuleId);
+			Log.info("Main module id: %d",this.mainModule.getId());
 		}
 		
 		this.modules.add(mod);
 	}
 	
+	private boolean isMainModuleEntry(BlockEntry entry) {
+		final boolean hasCid = this.mainModule.hasContainingId();
+		
+		if (!hasCid)
+			return this.mainModule.getId() == entry.getModuleId();
+		
+		return this.mainModule.getContainingId() == entry.getModuleId();
+	}
+	
 	protected void pushEntry(BlockEntry entry) {
-		if (this.mainModuleId == -1 || this.mainModuleId == entry.getModuleId()) {
+		if (this.mainModule == null || (this.mainModule != null && isMainModuleEntry(entry))) {
 			this.entries.add(entry);
 		}
 	}
@@ -367,7 +380,10 @@ public class CoverageDataSource implements AutoCloseable{
 	}
 	
 	public final int getMainModuleId() {
-		return this.mainModuleId;
+		if (this.mainModule == null)
+			return -1;
+		
+		return this.mainModule.getId();
 	}
 	
 	public final String getName() {
