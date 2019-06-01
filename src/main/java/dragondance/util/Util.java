@@ -35,20 +35,29 @@ public final class Util {
 	}
 	
 	private static int parseVersion(String ver) {
-		String[] parts = ver.split("\\.");
+		
+		if (ver == null)
+			return 0;
+		
+		String[] parts = ver.trim().split("\\.");
 		
 		if (parts.length==0)
 			return 0;
 		
 		int nver=0;
 		
-		nver = Integer.parseInt(parts[0]) << 16;
-		
-		if (parts.length>1)
-			nver |= Integer.parseInt(parts[1]) << 8;
-		
-		if (parts.length>2)
-			nver |= Integer.parseInt(parts[2]);
+		try {
+			nver = Integer.parseInt(parts[0]) << 16;
+			
+			if (parts.length>1)
+				nver |= Integer.parseInt(parts[1]) << 8;
+			
+			if (parts.length>2)
+				nver |= Integer.parseInt(parts[2]);
+		}
+		catch (NumberFormatException e) {
+			return 0;
+		}
 		
 		return nver;
 	}
