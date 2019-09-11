@@ -223,6 +223,28 @@ Select dragondance from the list
 
 Click Ok and restart the ghidra
 
+### Launching DragonDance
+
+During the first loading of a binary to the Ghidra after the plugin installation, Ghidra should ask you whether you want to configure the newly installed plugin or not.
+
+If you click the Yes button, DragonDance plugin should appear immediately. 
+
+If you click the No button you have to activate manually yourself.
+
+In order to active manually,
+
+
+Click "File" menu and then select Configure from the Disassembly Window (CodeBrowser)
+
+Click the little plug icon from the top right corner of the Configure Tool window.
+
+Find the DragonDance item from the plugin list and enable it's checkbox then click Ok
+
+Dragon Dance window should be appeared.
+
+After the activation you should able to see Dragon Dance item in the Window menu.
+
+
 ### Collecting Coverage Data
 
 As I described before, Dragon Dance can import coverage data from Dynamorio and the Intel Pin. (For now). Actually these are generic binary instrumentation tools. You have to use proper module with them to collect coverage data. Dynamorio has it's own coverage module called drcov. You can use that built-in module to collect coverage.
