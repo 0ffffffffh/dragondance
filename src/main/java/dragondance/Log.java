@@ -55,11 +55,15 @@ public class Log {
 	}
 	
 	
-	private static void flagSetReset(final int v, boolean enabled) {
+	private static boolean flagSetReset(final int v, boolean enabled) {
+		boolean previous = (logFlag & v) == v;
+		
 		if (enabled)
 			logFlag |= v;
 		else
 			logFlag &= ~v;
+		
+		return previous;
 	}
 	
 	private static final boolean hasFlag(final int flag) {
@@ -90,28 +94,28 @@ public class Log {
 		flagSetReset(LOGGER_LOG_FILE,enabled);
 	}
 	
-	public static void enableStdoutLogging(boolean enabled) {
-		flagSetReset(LOGGER_LOG_STDOUT,enabled);
+	public static boolean enableStdoutLogging(boolean enabled) {
+		return flagSetReset(LOGGER_LOG_STDOUT,enabled);
 	}
 	
-	public static void enableError(boolean enable) {
-		flagSetReset(LOGGER_ERROR,enable);
+	public static boolean enableError(boolean enable) {
+		return flagSetReset(LOGGER_ERROR,enable);
 	}
 	
-	public static void enableWarning(boolean enable) {
-		flagSetReset(LOGGER_WARNING,enable);
+	public static boolean enableWarning(boolean enable) {
+		return flagSetReset(LOGGER_WARNING,enable);
 	}
 	
-	public static void enableInfo(boolean enable) {
-		flagSetReset(LOGGER_INFO,enable);
+	public static boolean enableInfo(boolean enable) {
+		return flagSetReset(LOGGER_INFO,enable);
 	}
 	
-	public static void enableVerbose(boolean enable) {
-		flagSetReset(LOGGER_VERBOSE,enable);
+	public static boolean enableVerbose(boolean enable) {
+		return flagSetReset(LOGGER_VERBOSE,enable);
 	}
 	
-	public static void enableDebug(boolean enable) {
-		flagSetReset(LOGGER_DEBUG,enable);
+	public static boolean enableDebug(boolean enable) {
+		return flagSetReset(LOGGER_DEBUG,enable);
 	}
 	
 	private static void print(String logType, String format, Object... args) {

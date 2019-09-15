@@ -16,7 +16,7 @@ public class PintoolDataSource extends CoverageDataSource {
 		
 		while ((line = readLine()) != null) {
 			if (line.startsWith("EntryCount:")) {
-				parts = splitMultiDelim(line,":, ");
+				parts = splitMultiDelim(line,":, ",false);
 				this.entryTableSize = Integer.parseInt(parts[1]);
 				this.moduleCount = Integer.parseInt(parts[3]);
 			}
@@ -35,7 +35,7 @@ public class PintoolDataSource extends CoverageDataSource {
 		int readModuleCount=0;
 		
 		while ((line = readLine()) != null) {
-			String[] parts = splitMultiDelim(line,", ");
+			String[] parts = splitMultiDelim(line,",", true);
 			
 			ModuleInfo mod = ModuleInfo.make(
 					parts[0], 

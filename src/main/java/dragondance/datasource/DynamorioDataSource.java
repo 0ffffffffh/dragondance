@@ -23,21 +23,21 @@ public class DynamorioDataSource extends CoverageDataSource {
 		
 		while ((line = readLine()) != null) {
 			if (line.startsWith("DRCOV VERSION:")) {
-				parts = splitMultiDelim(line,": ");
+				parts = splitMultiDelim(line,": ",false);
 				this.drCovVersion = Integer.parseInt(parts[2]);
 			}
 			else if (line.startsWith("Module Table:")) {
-				parts = splitMultiDelim(line,": ,");
+				parts = splitMultiDelim(line,": ,",false);
 				this.moduleDefVersion = Integer.parseInt(parts[3]);
 				this.moduleCount = Integer.parseInt(parts[5]);
 			}
 			else if (line.startsWith("Columns:")) {
-				parts = splitMultiDelim(line,": ,");
+				parts = splitMultiDelim(line,": ,",false);
 				this.moduleInfoColumns = Arrays.copyOfRange(parts, 1, parts.length);
 				readModules();
 			}
 			else if (line.startsWith("BB Table:")) {
-				parts = splitMultiDelim(line," ");
+				parts = splitMultiDelim(line," ",false);
 				this.entryTableSize = Integer.parseInt(parts[2]);
 				readEntries();
 				break;
@@ -82,7 +82,7 @@ public class DynamorioDataSource extends CoverageDataSource {
 		ModuleInfo mod=null;
 		
 		while ((line = readLine()) != null) {
-			String[] parts = splitMultiDelim(line,", ");
+			String[] parts = splitMultiDelim(line,",",true);
 			
 			if (hasCid) {
 				mod = ModuleInfo.make(

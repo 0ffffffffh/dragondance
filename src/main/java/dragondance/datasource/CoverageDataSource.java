@@ -158,8 +158,9 @@ public class CoverageDataSource implements AutoCloseable{
 		return readLen;
 	}
 	
-	protected String[] splitMultiDelim(String str, String delims) {
+	protected String[] splitMultiDelim(String str, String delims, boolean trimItem) {
 		int p=0,slen=str.length();
+		String s;
 		
 		if (slen == 0)
 			return null;
@@ -169,14 +170,27 @@ public class CoverageDataSource implements AutoCloseable{
 		for (int i=0;i<slen;i++) {
 			if (delims.indexOf(str.charAt(i)) != -1) {
 				
-				if (p != i)
-					parts.add(str.substring(p,i));
+				if (p != i) {
+					s = str.substring(p,i);
+					
+					if (trimItem)
+						s = s.trim();
+					
+					parts.add(s);
+					
+				}
 				p = i + 1;
 			}
 		}
 		
-		if (p != slen)
-			parts.add(str.substring(p,slen));
+		if (p != slen) {
+			s = str.substring(p,slen);
+			
+			if (trimItem)
+				s = s.trim();
+			
+			parts.add(s);
+		}
 		
 		return parts.toArray(new String[parts.size()]);
 	}
