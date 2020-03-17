@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string>
+using namespace std;
 #include "pin.H"
 
 typedef char CHAR;
