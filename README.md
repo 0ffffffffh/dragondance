@@ -261,6 +261,15 @@ The output will be placed into given directory as *drcov.[EXECUTABLE_NAME].[ID].
 
 As I mention before, Intel Pin does not provide any built-in coverage collector module. You have to use a custom pin module. Fortunally I crafted my own to collect coverage from the Pin. So that brings a few advantage to us. I can extend it when needed or add extra features, options in it. 
 
+While later versions may work, only Intel PIN 3.7 is supported. These are not immediately offered on the Intel PIN page, so here are direct download links:
+
+https://software.intel.com/sites/landingpage/pintool/downloads/pin-3.7-97619-g0d0c92f4f-gcc-linux.tar.gz
+
+https://software.intel.com/sites/landingpage/pintool/downloads/pin-3.7-97619-g0d0c92f4f-msvc-windows.zip
+
+https://software.intel.com/sites/landingpage/pintool/downloads/pin-3.7-97619-g0d0c92f4f-clang-mac.tar.gz
+
+
 You can access **ddph**'s source [here](https://github.com/0ffffffffh/dragondance/tree/master/coveragetools). I will share binaries for Windows, macOS and Linux. Or you can build your very own binary using it's build shell script.
 
 To be collect coverage data from Intel Pin use following command:
