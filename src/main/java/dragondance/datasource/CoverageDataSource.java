@@ -314,7 +314,7 @@ public class CoverageDataSource implements AutoCloseable{
 	protected void pushModule(ModuleInfo mod) {
 		if (this.mainModuleName != null && 
 				this.mainModule == null && 
-				mod.getPath().endsWith(this.mainModuleName)
+				mod.getPath().toLowerCase().endsWith(this.mainModuleName.toLowerCase())
 				) 
 		{
 			this.mainModule = mod;
