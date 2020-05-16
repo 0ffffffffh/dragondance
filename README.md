@@ -310,7 +310,47 @@ type `csrutil status` again to make sure it is disabled or not. Then restart the
 
 ![](https://user-images.githubusercontent.com/437161/57895623-3f3c9900-7855-11e9-8b21-cc0d03adb3d7.gif)
 
+#### Build instructions
 
+First, download ghidra (latest version, currently 9.1.2) and dragondance
+```
+$ wget https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip
+$ wget https://github.com/0ffffffffh/dragondance/archive/master.zip
+$ unzip ghidra_9.1.2_PUBLIC_20200212.zip
+$ unzip master.zip
+```
+ Next install gradle and jdk
+```
+$ sudo apt install openjdk-11-jdk
+$ wget https://services.gradle.org/distributions/gradle-5.2.1-bin.zip
+$ sudo unzip -d /opt/gradle gradle-5.2.1-bin.zip
+```
+create new profile file
+```
+$ sudo vi /etc/profile.d/gradle.sh
+```
+and add the following to add gradle to the PATH in every subsequent login.
+```
+export GRADLE_HOME=/opt/gradle/gradle-5.2.1
+export PATH=${GRADLE_HOME}/bin:${PATH}
+```
+to do it immediately, without having to logout
+```
+$ source /etc/profile.d/gradle.sh
+```
+we can now proceed to build dragondance
+```
+$ cd dragondance-master/
+$ gradle -PGHIDRA_INSTALL_DIR=/home/ubuntu/ghidra_9.1.2_PUBLIC
+> Task :buildExtension
+
+Created ghidra_9.1.2_PUBLIC_20200506_dragondance-master.zip in /home/ubuntu/dragondance-master/dist
+
+BUILD SUCCESSFUL in 29s
+5 actionable tasks: 5 executed
+ubuntu@ubuntu:~/dragondance-master$ 
+```
+where you may have to adjust the path to where you downloaded ghidra to. You can now find the built extension in `dragondance-master/dist`
 
 #### The Features that I want to bring on it
 
