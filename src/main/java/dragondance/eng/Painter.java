@@ -9,7 +9,7 @@ import dragondance.eng.session.SessionManager;
 public class Painter {
 	
 	private static final float BRIGHTNESS = 1.0f;
-	private static final float SATURATION=0.60f;
+	private static final float SATURATION = 0.2f;
 	
 	public static final int CP_USE_MAX_DENSITY = 0;
 	public static final int CP_USE_THRESHOLD_VALUE = 1;
