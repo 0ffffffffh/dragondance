@@ -49,6 +49,9 @@ public class ScriptExecutionUnit {
 	
 	public boolean execute() {
 		
+		if (hasAssignee())
+			this.function.setNameAssigneeVar(this.assigneeVar.getName());
+		
 		if (this.function.execute() == null) {
 			
 			if (!this.function.hasReturnType())
@@ -57,8 +60,9 @@ public class ScriptExecutionUnit {
 			return false;
 		}
 		
-		if (hasAssignee())
+		if (hasAssignee()) {
 			this.assigneeVar.setResultCoverage(this.function.getReturn());
+		}
 		
 		return true;
 	}

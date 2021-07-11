@@ -42,6 +42,7 @@ public class BuiltinFunctionImport extends BuiltinFunctionBase {
 	
 	private CoverageData loadCoverage(String fileOrName) throws FileNotFoundException {
 		String prepFile;
+		String varName = super.getNameAssigneeVar();
 		CoverageData coverage=null;
 		Session session = SessionManager.getActiveSession();
 		
@@ -56,7 +57,7 @@ public class BuiltinFunctionImport extends BuiltinFunctionBase {
 			if (coverage != null)
 				return coverage;
 			
-			return guiSvc.loadCoverage(prepFile);
+			return guiSvc.loadCoverage(prepFile, varName);
 		}
 		
 		return session.getCoverageByName(fileOrName);

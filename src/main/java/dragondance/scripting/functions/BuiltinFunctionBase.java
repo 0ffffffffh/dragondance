@@ -13,6 +13,7 @@ public abstract class BuiltinFunctionBase {
 	
 	private List<BuiltinArg> args;
 	private CoverageData retVal;
+	private String nameAssigneeVar;
 	
 	protected GuiAffectedOpInterface guiSvc;
 	
@@ -129,5 +130,13 @@ public abstract class BuiltinFunctionBase {
 			this.aliases.clear();
 		
 		this.args.clear();
+	}
+
+	public String getNameAssigneeVar() {
+		return nameAssigneeVar;
+	}
+
+	public void setNameAssigneeVar(String nameAssigneeVar) {
+		this.nameAssigneeVar = nameAssigneeVar;
 	}
 }

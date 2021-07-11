@@ -31,7 +31,9 @@ import dragondance.eng.session.Session;
 import dragondance.eng.session.SessionManager;
 import dragondance.exceptions.InvalidInstructionAddress;
 import dragondance.exceptions.OperationAbortedException;
+import dragondance.exceptions.ScriptParserException;
 import dragondance.scripting.DragonDanceScripting;
+import dragondance.scripting.ScriptVariable;
 import dragondance.util.TextGraphic;
 import dragondance.util.Util;
 import ghidra.framework.plugintool.PluginTool;
@@ -93,7 +95,6 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 			}
 		};
 		
-
 		
 		
 		DockingAction actAbout = new DockingAction("about",getName()) {
@@ -239,9 +240,10 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		
 	}
 	
-	private void addCoverageTable(CoverageData coverage) {
+	private void addCoverageTable(CoverageData coverage, String varName) {
 		dtm.addRow(new Object[] {
 				coverage.getSourceId(),
+				varName,
 				coverage.getName(),
 				Session.getCoverageTypeString(coverage.getSource().getType())
 				});
@@ -249,14 +251,22 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		dtm.fireTableDataChanged();
 	}
 	
-	private void removeFromCoverageTable(int id) {
+	private String removeFromCoverageTable(int id) {
 		int row = coverageIdToTableRow(id);
+		
+		String varName = (String)dtm.getValueAt(row, 1);
 		
 		dtm.removeRow(row);
 		dtm.fireTableDataChanged();
+		
+		return varName;
 	}
 	
 	private CoverageData importCoverage(String coverageFile) throws FileNotFoundException {
+		return importCoverage(coverageFile, null);
+	}
+
+	private CoverageData importCoverage(String coverageFile, String varName) throws FileNotFoundException {
 		CoverageData coverage;
 		Session session = getSession();
 		
@@ -274,11 +284,23 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		
 		try {
 			if (coverage.build()) {
-				
 				Runnable postBuildGuiOp = new Runnable() {
 					@Override
 					public void run() {
-						addCoverageTable(coverage);
+						String name = varName;
+						if (name == null || name.isEmpty()) {
+							name = "c"+String.valueOf(coverage.getSourceId());
+							
+							try {
+								ScriptVariable sv = new ScriptVariable(name);
+								sv.setResultCoverage(coverage);
+							} catch (ScriptParserException e) {
+								e.printStackTrace();
+								return;
+							}
+						}
+						
+						addCoverageTable(coverage, name);
 						writeStatusTextInfoPanel(StringResources.COVERAGE_IMPORTED_HINT);
 						setStatusText("Done");
 					}
@@ -369,22 +391,14 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 	}
 	
 	private void onDeleteCoverageItemClick() {
-		Session session = getSession();
-		
-		if (session == null)
-			return;
-		
 		int[] ids  = getSelectedCoverageIds();
 		
 		if (ids.length == 0)
 			return;
 		
 		for (int id : ids) {
-			if (session.removeCoverageData(id))
-				removeFromCoverageTable(id);
+			removeCoverage(id);
 		}
-		
-		
 	}
 	
 	private void onSwitchCoverageItemClick() {
@@ -507,9 +521,7 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 					if (e.getKeyCode() == KeyEvent.VK_ENTER && 
 							(e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK) {
 						
-						
 						DragonDanceScripting.execute(txtScript.getText());
-						
 					}
 				}
 	
@@ -595,9 +607,15 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		
 		
 		
-		dtm = new DefaultTableModel();
+		dtm = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column != 1;
+			}
+		};
 		
 		dtm.addColumn("Coverage Id");
+		dtm.addColumn("Var Name");
 		dtm.addColumn("Name");
 		dtm.addColumn("Source type");
 		
@@ -704,6 +722,11 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 	public CoverageData loadCoverage(String coverageDataFile) throws FileNotFoundException {
 		return importCoverage(coverageDataFile);
 	}
+	
+	@Override
+	public CoverageData loadCoverage(String coverageDataFile, String varName) throws FileNotFoundException {
+		return importCoverage(coverageDataFile, varName);
+	}
 
 	@Override
 	public boolean removeCoverage(int id) {
@@ -713,9 +736,10 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		if (session == null)
 			return false;
 		
-		if (session.removeCoverageData(id))
-			removeFromCoverageTable(id);
-		else
+		if (session.removeCoverageData(id)) {
+			String varName = removeFromCoverageTable(id);
+			DragonDanceScripting.removeVariableByName(varName);
+		} else
 			return false;
 		
 		return true;
@@ -724,6 +748,7 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 	@Override
 	public boolean visualizeCoverage(CoverageData coverage) {
 		
+
 		Session session = getSession();
 		
 		if (session == null) {
@@ -756,7 +781,5 @@ public class MainDockProvider extends ComponentProvider implements GuiAffectedOp
 		
 		return success;
 	}
-
-
 
 }
