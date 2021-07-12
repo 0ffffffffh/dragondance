@@ -28,7 +28,7 @@ public class CoverageDataSource implements AutoCloseable{
 	
 	protected List<ModuleInfo> modules;
 	protected List<BlockEntry> entries;
-	
+
 	protected String mainModuleName = null;
 	protected ModuleInfo mainModule = null;
 	
@@ -331,7 +331,8 @@ public class CoverageDataSource implements AutoCloseable{
 		if (!hasCid)
 			return this.mainModule.getId() == entry.getModuleId();
 		
-		return this.mainModule.getContainingId() == entry.getModuleId();
+		return (entry.getModuleId() < this.modules.size() &&
+				this.modules.get(entry.getModuleId()).getContainingId() == this.mainModule.getContainingId());
 	}
 	
 	protected void pushEntry(BlockEntry entry) {
